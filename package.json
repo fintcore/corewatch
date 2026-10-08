@@ -37,12 +37,26 @@
       "require": "./dist/cjs/index.js",
       "default": "./dist/esm/index.js"
     },
+    "./react": {
+      "types": "./react.d.ts",
+      "import": "./dist/esm/react/index.js",
+      "require": "./dist/cjs/react/index.js",
+      "default": "./dist/esm/react/index.js"
+    },
+    "./core": {
+      "types": "./core.d.ts",
+      "import": "./dist/esm/core/index.js",
+      "require": "./dist/cjs/core/index.js",
+      "default": "./dist/esm/core/index.js"
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "files": [
     "dist",
     "index.d.ts",
+    "react.d.ts",
+    "core.d.ts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
