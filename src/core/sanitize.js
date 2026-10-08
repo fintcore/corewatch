@@ -50,26 +50,32 @@ function keyIsSensitive(key, denyKeys) {
 export function sanitize(input, denyKeys = DEFAULT_DENY_KEYS, depth = 0, seen = new WeakSet()) {
   if (input === null || typeof input !== 'object') return input;
   if (depth > MAX_DEPTH) return '[MaxDepth]';
+  // `seen` holds the current ancestors only, so an object referenced twice
+  // (but not inside itself) is kept instead of being reported as circular.
   if (seen.has(input)) return '[Circular]';
   seen.add(input);
 
-  if (Array.isArray(input)) {
-    return input.slice(0, 100).map((v) => sanitize(v, denyKeys, depth + 1, seen));
-  }
+  try {
+    if (Array.isArray(input)) {
+      return input.slice(0, 100).map((v) => sanitize(v, denyKeys, depth + 1, seen));
+    }
 
-  const out = {};
-  for (const key of Object.keys(input)) {
-    if (keyIsSensitive(key, denyKeys)) {
-      out[key] = MASK;
-      continue;
+    const out = {};
+    for (const key of Object.keys(input)) {
+      if (keyIsSensitive(key, denyKeys)) {
+        out[key] = MASK;
+        continue;
+      }
+      try {
+        out[key] = sanitize(input[key], denyKeys, depth + 1, seen);
+      } catch (_) {
+        out[key] = '[Unserializable]';
+      }
     }
-    try {
-      out[key] = sanitize(input[key], denyKeys, depth + 1, seen);
-    } catch (_) {
-      out[key] = '[Unserializable]';
-    }
+    return out;
+  } finally {
+    seen.delete(input);
   }
-  return out;
 }
 
 export { DEFAULT_DENY_KEYS };
