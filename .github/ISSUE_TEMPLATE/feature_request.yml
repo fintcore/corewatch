@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest an idea or a new integration
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: API sketch, examples, or how another tool does it.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Browser / React
+        - React Native
+        - Node.js
+        - Other

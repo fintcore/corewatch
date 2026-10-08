@@ -1,0 +1,38 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: A minimal snippet or repository helps a lot.
+      render: jsx
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: CoreWatch version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Browser, React version, bundler (CRA, Vite, Next.js...)
+      placeholder: Chrome 154, React 18.3, Vite 5
+  - type: textarea
+    id: init
+    attributes:
+      label: init() options
+      description: Remove any secrets.
+      render: js
