@@ -132,12 +132,13 @@ export function createClient(userConfig, transports, options = {}) {
     getScope: () => scope,
 
     captureException(error, extraContext) {
-      const mechanism = (extraContext && extraContext.mechanism) || 'manual';
+      // `mechanism` describes how the error was caught; it is not extra data.
+      const { mechanism = 'manual', ...extra } = extraContext || {};
       return process({
         error,
         level: 'error',
-        mechanism, 
-      }, extraContext);
+        mechanism,
+      }, extra);
     },
 
     captureMessage(message, level = 'info', extraContext) {

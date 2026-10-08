@@ -39,6 +39,14 @@ describe('createClient', () => {
     expect(sent.map((e) => e.message)).toEqual(['kept']);
   });
 
+  it('keeps the capture mechanism out of extra', () => {
+    const { client, sent } = setup();
+    client.captureException(new Error('x'), { mechanism: 'react.errorBoundary', react: { componentStack: 'in App' } });
+
+    expect(sent[0].mechanism).toBe('react.errorBoundary');
+    expect(sent[0].extra).toEqual({ react: { componentStack: 'in App' } });
+  });
+
   it('drops duplicates', () => {
     const { client, sent } = setup();
     const err = new Error('same');
