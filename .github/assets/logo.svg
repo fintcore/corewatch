@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="72" viewBox="0 0 320 72" role="img" aria-label="CoreWatch">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7B6CD9"/>
+      <stop offset="1" stop-color="#5848B8"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="64" height="64" rx="16" fill="url(#g)"/>
+  <circle cx="36" cy="36" r="17" fill="none" stroke="#fff" stroke-width="5"/>
+  <circle cx="36" cy="36" r="5.5" fill="#fff"/>
+  <path d="M36 12v6M36 54v6M12 36h6M54 36h6" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+  <text x="86" y="47" font-family="Rubik, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="34" font-weight="600" fill="#6C5FC7">Core<tspan fill="#8D7FE6" font-weight="500">Watch</tspan></text>
+</svg>
