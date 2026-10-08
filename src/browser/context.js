@@ -25,10 +25,11 @@ export function parseUserAgent(ua = '') {
     // eslint-disable-next-line prefer-destructuring
     if (m) browser.version = m[2];
 
+    // iOS before macOS: iPhone/iPad user agents contain "like Mac OS X".
     if (/windows/i.test(ua)) os.name = 'Windows';
+    else if (/iphone|ipad|ipod/i.test(ua)) os.name = 'iOS';
     else if (/mac os x/i.test(ua)) os.name = 'macOS';
     else if (/android/i.test(ua)) os.name = 'Android';
-    else if (/iphone|ipad|ipod/i.test(ua)) os.name = 'iOS';
     else if (/linux/i.test(ua)) os.name = 'Linux';
   } catch (_) {
     /* noop */
