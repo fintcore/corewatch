@@ -69,7 +69,8 @@
     "prepare": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepublishOnly": "npm test && npm run build"
+    "prepublishOnly": "npm test && npm run build && npm run check:exports",
+    "check:exports": "node scripts/check-exports.mjs"
   },
   "peerDependencies": {
     "react": ">=16.8"
