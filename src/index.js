@@ -18,6 +18,7 @@ import { createConsoleTransport } from './transports/consoleTransport';
 import { createHttpTransport } from './transports/httpTransport';
 import { installGlobalHandlers } from './browser/globalHandlers';
 import { installBreadcrumbs } from './browser/breadcrumbs';
+import { getRuntimeContext } from './browser/context';
 
 let client = null; // module-level singleton (the "hub")
 
@@ -36,7 +37,7 @@ export function init(config = {}) {
   if (client) return client;
 
   const transports = config.transports || [createConsoleTransport()];
-  client = createClient(config, transports);
+  client = createClient(config, transports, { getContext: getRuntimeContext });
 
   const integrations = config.integrations || {};
   if (integrations.globalHandlers !== false) installGlobalHandlers(client);

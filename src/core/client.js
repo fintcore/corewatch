@@ -8,6 +8,7 @@ import { createScope } from './scope';
 import { createDeduper } from './dedupe';
 import { buildEvent } from './event';
 import { sanitize, DEFAULT_DENY_KEYS } from './sanitize';
+import { SDK } from './sdk';
 
 export const DEFAULT_CONFIG = {
   enabled: true,
@@ -34,7 +35,18 @@ function matchesIgnore(message, patterns) {
   });
 }
 
-export function createClient(userConfig, transports) {
+/** Minimal context when no platform adapter provides one. */
+function defaultContext() {
+  return { sdk: SDK, timestamp: new Date().toISOString() };
+}
+
+/**
+ * @param {object} userConfig
+ * @param {Array}  transports
+ * @param {object} [options]
+ * @param {() => object} [options.getContext]  platform runtime context (browser, React Native, Node...)
+ */
+export function createClient(userConfig, transports, options = {}) {
   const config = {
     ...DEFAULT_CONFIG,
     ...(userConfig || {}), 
@@ -42,6 +54,15 @@ export function createClient(userConfig, transports) {
   const scope = createScope(config.maxBreadcrumbs);
   const deduper = createDeduper();
   const activeTransports = transports || [];
+  const getContext = typeof options.getContext === 'function' ? options.getContext : defaultContext;
+
+  function runtimeContext() {
+    try {
+      return getContext();
+    } catch (_) {
+      return defaultContext();
+    }
+  }
 
   if (userConfig && userConfig.user) scope.setUser(userConfig.user);
 
@@ -66,7 +87,7 @@ export function createClient(userConfig, transports) {
     if (!config.enabled) return null;
 
     try {
-      let event = buildEvent(raw, config, scope.snapshot(), extraContext);
+      let event = buildEvent(raw, config, scope.snapshot(), extraContext, runtimeContext());
 
       if (matchesIgnore(event.message, config.ignoreErrors)) {
         log('ignored by ignoreErrors', event.message);

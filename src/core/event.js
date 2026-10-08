@@ -4,7 +4,6 @@
  * so keep it stable.
  */
 
-import { getRuntimeContext } from '../browser/context';
 import { SDK } from './sdk';
 import { normalizeError } from './stacktrace';
 
@@ -34,8 +33,9 @@ function makeEventId() {
  * @param {object} config              active client config
  * @param {object} scopeSnapshot       user/tags/extra/breadcrumbs
  * @param {object} [extraContext]      integration-specific extras (e.g. componentStack)
+ * @param {object} [runtimeContext]    platform snapshot (url, UA, device...) from the platform adapter
  */
-export function buildEvent({ error, message, level, mechanism }, config, scopeSnapshot, extraContext) {
+export function buildEvent({ error, message, level, mechanism }, config, scopeSnapshot, extraContext, runtimeContext) {
   const event = {
     eventId: makeEventId(),
     level: level || (error ? 'error' : 'info'),
@@ -48,7 +48,7 @@ export function buildEvent({ error, message, level, mechanism }, config, scopeSn
     release: config.release || null,
     environment: config.environment || null,
 
-    context: getRuntimeContext(),
+    context: runtimeContext || { sdk: SDK, timestamp: new Date().toISOString() },
     user: scopeSnapshot.user,
     tags: scopeSnapshot.tags,
     extra: {
