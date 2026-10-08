@@ -7,7 +7,7 @@ Thanks for helping! This guide covers how to set up the project and what we expe
 ```bash
 git clone https://github.com/fintcore/corewatch.git
 cd corewatch
-nvm use        # Node 22 (see .nvmrc); Node 18+ works
+nvm use        # Node 22 (see .nvmrc); Node 20+ works
 npm install    # also builds dist/
 npm test
 ```
@@ -64,7 +64,7 @@ Keep each commit focused on one change.
 - Add or update tests for any behavior change.
 - Update the docs and `index.d.ts` when the public API changes.
 - Add an entry under `Unreleased` in `CHANGELOG.md`.
-- Make sure `npm test`, `npm run build` and `npm run check:exports` pass (CI runs them on Node 18, 20 and 22).
+- Make sure `npm test`, `npm run build` and `npm run check:exports` pass (CI runs them on Node 20, 22 and 24).
 
 ## Releasing (maintainers)
 
