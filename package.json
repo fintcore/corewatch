@@ -1,19 +1,41 @@
 {
-  "name": "corewatch",
+  "name": "@dynamicore/corewatch",
   "version": "0.1.0",
-  "description": "CoreWatch — Sentry-like client-side error capture for React apps.",
+  "description": "Lightweight, Sentry-style error monitoring SDK for React and the browser: errors, breadcrumbs, PII scrubbing and pluggable transports.",
+  "keywords": [
+    "error-monitoring",
+    "error-tracking",
+    "crash-reporting",
+    "observability",
+    "breadcrumbs",
+    "react",
+    "error-boundary",
+    "redux",
+    "sentry-alternative",
+    "logging"
+  ],
+  "homepage": "https://github.com/fintcore/corewatch#readme",
+  "bugs": {
+    "url": "https://github.com/fintcore/corewatch/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fintcore/corewatch.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "DynamiCore",
-    "url": "http://dynamicore.io"
+    "url": "https://dynamicore.io"
   },
-  "license": "UNLICENSED",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "sideEffects": false,
   "files": [
     "dist",
     "index.d.ts",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "babel src --out-dir dist --extensions \".js,.jsx\" --delete-dir-on-start",
@@ -39,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
