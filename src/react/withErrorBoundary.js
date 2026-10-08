@@ -8,7 +8,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary.js';
 
 export default function withErrorBoundary(WrappedComponent, boundaryProps = {}) {
   function Wrapped(props) {

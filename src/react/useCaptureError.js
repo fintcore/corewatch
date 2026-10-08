@@ -12,7 +12,7 @@ import { useCallback } from 'react';
 
 import {
   captureException, captureMessage, addBreadcrumb, 
-} from '../core/hub';
+} from '../core/hub.js';
 
 export default function useCaptureError() {
   const capture = useCallback((error, extra) => captureException(error, extra), []);

@@ -8,8 +8,8 @@
  * file only wires the browser adapter (context, global handlers, breadcrumbs).
  */
 
-import { initClient } from './core/hub';
-import { browserPlatform } from './browser';
+import { initClient } from './core/hub.js';
+import { browserPlatform } from './browser/index.js';
 
 /**
  * Initialize CoreWatch. Idempotent — a second call is ignored.
@@ -30,16 +30,16 @@ export {
   setTag,
   setExtra,
   logger,
-} from './core/hub';
+} from './core/hub.js';
 
 // Transports (compose your own list in init).
-export { createConsoleTransport } from './transports/consoleTransport';
-export { createHttpTransport } from './transports/httpTransport';
+export { createConsoleTransport } from './transports/consoleTransport.js';
+export { createHttpTransport } from './transports/httpTransport.js';
 
 // Redux integration (Sentry.createReduxEnhancer parity).
-export { createReduxEnhancer } from './integrations/redux';
+export { createReduxEnhancer } from './integrations/redux.js';
 
 // React adapter.
-export { default as ErrorBoundary } from './react/ErrorBoundary';
-export { default as withErrorBoundary } from './react/withErrorBoundary';
-export { default as useCaptureError } from './react/useCaptureError';
+export { default as ErrorBoundary } from './react/ErrorBoundary.js';
+export { default as withErrorBoundary } from './react/withErrorBoundary.js';
+export { default as useCaptureError } from './react/useCaptureError.js';

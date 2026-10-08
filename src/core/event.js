@@ -4,8 +4,8 @@
  * so keep it stable.
  */
 
-import { SDK } from './sdk';
-import { normalizeError } from './stacktrace';
+import { SDK } from './sdk.js';
+import { normalizeError } from './stacktrace.js';
 
 let counter = 0;
 

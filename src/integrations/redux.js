@@ -10,7 +10,7 @@
  * scrubbing as everything else before an event is sent.
  */
 
-import { addBreadcrumb, setExtra } from '../core/hub';
+import { addBreadcrumb, setExtra } from '../core/hub.js';
 
 export function createReduxEnhancer(options = {}) {
   const cfg = {

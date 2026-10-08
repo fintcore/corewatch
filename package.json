@@ -38,7 +38,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "babel src --out-dir dist --extensions \".js,.jsx\" --delete-dir-on-start",
+    "build": "babel src --out-dir dist --delete-dir-on-start",
     "prepare": "npm run build"
   },
   "peerDependencies": {

@@ -7,7 +7,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 
-import { captureException } from '../core/hub';
+import { captureException } from '../core/hub.js';
 
 class ErrorBoundary extends Component {
   constructor(props) {

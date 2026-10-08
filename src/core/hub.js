@@ -11,7 +11,7 @@
  *   }
  */
 
-import { createClient } from './client';
+import { createClient } from './client.js';
 
 let client = null;
 

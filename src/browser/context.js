@@ -3,7 +3,7 @@
  * No side effects on import; every global access is guarded.
  */
 
-import { SDK } from '../core/sdk';
+import { SDK } from '../core/sdk.js';
 
 /** Very light UA parse. Server-side enrichment can do better later. */
 export function parseUserAgent(ua = '') {

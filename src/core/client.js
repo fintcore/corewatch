@@ -4,11 +4,11 @@
  * into the host app.
  */
 
-import { createScope } from './scope';
-import { createDeduper } from './dedupe';
-import { buildEvent } from './event';
-import { sanitize, DEFAULT_DENY_KEYS } from './sanitize';
-import { SDK } from './sdk';
+import { createScope } from './scope.js';
+import { createDeduper } from './dedupe.js';
+import { buildEvent } from './event.js';
+import { sanitize, DEFAULT_DENY_KEYS } from './sanitize.js';
+import { SDK } from './sdk.js';
 
 export const DEFAULT_CONFIG = {
   enabled: true,
