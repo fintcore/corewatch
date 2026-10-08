@@ -7,7 +7,7 @@ This guide takes a React app from zero to its first captured error in about five
 | | Supported |
 |---|---|
 | Browsers | Anything matched by `>0.2%, not dead, not op_mini all` (the published build is already transpiled) |
-| React | 16.8 or newer (hooks). React is optional if you only use the core API |
+| React | 16.8 or newer, for the root and `/react` entry points. `@dynamicore/corewatch/core` does not import React |
 | Bundlers | webpack 4/5 (including Create React App), Vite, Rollup, esbuild, Parcel |
 | TypeScript | Types are bundled; no `@types` package needed |
 | Node.js | Only to build your app. Server-side capture is on the [roadmap](./platforms.md) |
