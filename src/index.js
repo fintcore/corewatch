@@ -32,6 +32,9 @@ export {
   logger,
 } from './core/hub.js';
 
+// Default list of keys scrubbed from events (extend it through `denyKeys`).
+export { DEFAULT_DENY_KEYS } from './core/sanitize.js';
+
 // Transports (compose your own list in init).
 export { createConsoleTransport } from './transports/consoleTransport.js';
 export { createHttpTransport } from './transports/httpTransport.js';

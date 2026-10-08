@@ -104,6 +104,9 @@ export function setUser(user: unknown): void;
 export function setTag(key: string, value: unknown): void;
 export function setExtra(key: string, value: unknown): void;
 
+/** Keys whose values are replaced by "[Filtered]" (lower-case substring match). */
+export const DEFAULT_DENY_KEYS: string[];
+
 export const logger: {
   fatal: (message: string, extra?: Record<string, unknown>) => string | void;
   error: (message: string, extra?: Record<string, unknown>) => string | void;

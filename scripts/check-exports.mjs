@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const require = createRequire(import.meta.url);
 const expected = {
-  '.': ['init', 'captureException', 'ErrorBoundary', 'createHttpTransport'],
+  '.': ['init', 'captureException', 'ErrorBoundary', 'createHttpTransport', 'DEFAULT_DENY_KEYS'],
   './react': ['ErrorBoundary', 'withErrorBoundary', 'useCaptureError'],
   './core': ['initClient', 'createClient', 'sanitize'],
 };
