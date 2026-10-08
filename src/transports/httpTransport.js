@@ -1,10 +1,10 @@
 /**
- * Phase 2 transport: persists each event through the DynamiCore CRUD
- * `POST {baseUrl}/private/thirds/corewatch_events` (→ thirds.corewatch_events_crud 'insert').
+ * HTTP transport: persists each event through the DynamiCore CRUD
+ * API: `POST {baseUrl}/private/thirds/corewatch_events`.
  *
  *   transports: [createConsoleTransport(), createHttpTransport({ baseUrl: API_URL, context: API_CONTEXT })]
  *
- * Headers follow the host apps' axios setup (core-panel / core-panel-v2):
+ * Headers follow the DynamiCore apps' axios setup:
  *   Authorization: <accessToken>   (raw token, no "Bearer")
  *   context: <API context>         (only when the app has one)
  *

@@ -1,6 +1,6 @@
 /**
- * Phase 1 transport: pretty-prints every event to the browser console.
- * Nothing leaves the browser. Swap/add the HTTP transport in phase 2.
+ * Console transport: pretty-prints every event as a styled console group.
+ * Nothing leaves the browser. It is the default when init() gets no transports.
  */
 
 const LEVEL_STYLE = {

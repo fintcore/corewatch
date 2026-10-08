@@ -1,7 +1,7 @@
 /**
  * Redux store enhancer (Sentry.createReduxEnhancer parity).
  *
- *   import { createReduxEnhancer } from 'corewatch';
+ *   import { createReduxEnhancer } from '@dynamicore/corewatch';
  *   const enhancers = [middlewareEnhancer, createReduxEnhancer()];
  *   const store = createStore(rootReducer, compose(...enhancers));
  *

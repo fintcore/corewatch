@@ -69,7 +69,7 @@ class ErrorBoundary extends Component {
     }
     if (fallback !== undefined) return fallback;
 
-    // Minimal built-in fallback (skeleton). Replace with your UI.
+    // Minimal built-in fallback. Apps should pass their own `fallback`.
     return (
       <div style={{
         padding: 24,

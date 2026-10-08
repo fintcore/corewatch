@@ -1,7 +1,7 @@
 /**
  * Mutable state shared across the app lifetime: user, tags, extra data and the
  * breadcrumb trail. One scope per client (Sentry-style global scope, minus the
- * hub/child-scope machinery — kept simple for the skeleton).
+ * hub/child-scope machinery — intentionally simple).
  */
 
 export function createScope(maxBreadcrumbs = 50) {
