@@ -1,31 +1,15 @@
 /**
- * CoreWatch — Sentry-like client-side error capture for React apps.
+ * CoreWatch — browser entry point.
  *
- * Usage (namespace, Sentry-style):
- *   import * as CoreWatch from 'corewatch';
- *   CoreWatch.init({ dsn, environment, release });
- *   <CoreWatch.ErrorBoundary> ... </CoreWatch.ErrorBoundary>
+ *   import * as CoreWatch from '@dynamicore/corewatch';
+ *   CoreWatch.init({ project: 'my-app', environment: 'production' });
  *
- * Or named imports:
- *   import { init, captureException, ErrorBoundary } from 'corewatch';
- *
- * Phase 1 sends everything to the browser console only — no data leaves the
- * browser. Phase 2: add createHttpTransport() to persist to your API.
+ * The capture API lives in core/hub.js and is shared by every platform; this
+ * file only wires the browser adapter (context, global handlers, breadcrumbs).
  */
 
-import { createClient } from './core/client';
-import { createConsoleTransport } from './transports/consoleTransport';
-import { createHttpTransport } from './transports/httpTransport';
-import { installGlobalHandlers } from './browser/globalHandlers';
-import { installBreadcrumbs } from './browser/breadcrumbs';
-import { getRuntimeContext } from './browser/context';
-
-let client = null; // module-level singleton (the "hub")
-
-function warnNotInit() {
-  /* eslint-disable-next-line no-console */
-  if (typeof console !== 'undefined' && console.warn) console.warn('[CoreWatch] called before init(); ignored.');
-}
+import { initClient } from './core/hub';
+import { browserPlatform } from './browser';
 
 /**
  * Initialize CoreWatch. Idempotent — a second call is ignored.
@@ -34,73 +18,23 @@ function warnNotInit() {
  *   integrations: { globalHandlers, console, fetch, xhr, dom, history }
  */
 export function init(config = {}) {
-  if (client) return client;
-
-  const transports = config.transports || [createConsoleTransport()];
-  client = createClient(config, transports, { getContext: getRuntimeContext });
-
-  const integrations = config.integrations || {};
-  if (integrations.globalHandlers !== false) installGlobalHandlers(client);
-  installBreadcrumbs(client, integrations);
-
-  if (config.debug && typeof console !== 'undefined') {
-    // eslint-disable-next-line no-console
-    console.log('[CoreWatch] initialized', {
-      project: client.config.project,
-      environment: client.config.environment,
-      release: client.config.release,
-      transports: transports.map((t) => t.name),
-    });
-  }
-
-  return client;
+  return initClient(config, browserPlatform);
 }
 
-export function getClient() {
-  return client;
-}
-
-export function captureException(error, extra) {
-  if (!client) return warnNotInit();
-  return client.captureException(error, extra);
-}
-
-export function captureMessage(message, level, extra) {
-  if (!client) return warnNotInit();
-  return client.captureMessage(message, level, extra);
-}
-
-export function addBreadcrumb(crumb) {
-  if (!client) return warnNotInit();
-  return client.addBreadcrumb(crumb);
-}
-
-export function setUser(user) {
-  if (!client) return warnNotInit();
-  return client.setUser(user);
-}
-
-export function setTag(key, value) {
-  if (!client) return warnNotInit();
-  return client.setTag(key, value);
-}
-
-export function setExtra(key, value) {
-  if (!client) return warnNotInit();
-  return client.setExtra(key, value);
-}
-
-/** Structured logging helpers (Sentry.logger parity). */
-export const logger = {
-  fatal: (message, extra) => captureMessage(message, 'fatal', extra),
-  error: (message, extra) => captureMessage(message, 'error', extra),
-  warn: (message, extra) => captureMessage(message, 'warning', extra),
-  info: (message, extra) => captureMessage(message, 'info', extra),
-  debug: (message, extra) => captureMessage(message, 'debug', extra),
-};
+export {
+  getClient,
+  captureException,
+  captureMessage,
+  addBreadcrumb,
+  setUser,
+  setTag,
+  setExtra,
+  logger,
+} from './core/hub';
 
 // Transports (compose your own list in init).
-export { createConsoleTransport, createHttpTransport };
+export { createConsoleTransport } from './transports/consoleTransport';
+export { createHttpTransport } from './transports/httpTransport';
 
 // Redux integration (Sentry.createReduxEnhancer parity).
 export { createReduxEnhancer } from './integrations/redux';
