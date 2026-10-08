@@ -39,7 +39,5 @@ export { createHttpTransport } from './transports/httpTransport.js';
 // Redux integration (Sentry.createReduxEnhancer parity).
 export { createReduxEnhancer } from './integrations/redux.js';
 
-// React adapter.
-export { default as ErrorBoundary } from './react/ErrorBoundary.js';
-export { default as withErrorBoundary } from './react/withErrorBoundary.js';
-export { default as useCaptureError } from './react/useCaptureError.js';
+// React adapter (also available as '@dynamicore/corewatch/react').
+export { ErrorBoundary, withErrorBoundary, useCaptureError } from './react/index.js';
