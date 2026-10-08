@@ -1,5 +1,5 @@
-// Minimal type declarations for CoreWatch.
-// React-specific pieces are loosely typed to avoid a hard @types/react dep.
+// Type declarations for @dynamicore/corewatch (browser entry).
+// React-specific pieces are loosely typed to avoid a hard @types/react dependency.
 
 export type Level = 'fatal' | 'error' | 'warning' | 'info' | 'debug';
 
@@ -17,12 +17,35 @@ export interface Transport {
   flush?: (useBeacon?: boolean) => void;
 }
 
+export interface StackFrame {
+  function?: string;
+  filename?: string;
+  lineno?: number;
+  colno?: number;
+}
+
+export interface ExceptionInfo {
+  type: string;
+  value: string;
+  stack: StackFrame[];
+}
+
+/** How an event was captured. */
+export type Mechanism =
+  | 'manual'
+  | 'onerror'
+  | 'resource'
+  | 'unhandledrejection'
+  | 'react.errorBoundary'
+  | 'hook.wrapAsync'
+  | (string & {});
+
 export interface CoreWatchEvent {
   eventId: string;
-  level: string;
+  level: Level;
   message: string | null;
-  exception: { type: string; value: string; stack: unknown[] } | null;
-  mechanism: string;
+  exception: ExceptionInfo | null;
+  mechanism: Mechanism;
   project: string | null;
   release: string | null;
   environment: string | null;
@@ -60,8 +83,20 @@ export interface InitConfig {
   };
 }
 
-export function init(config?: InitConfig): unknown;
-export function getClient(): unknown;
+export interface Client {
+  readonly config: Required<Pick<InitConfig, 'enabled' | 'debug' | 'environment' | 'maxBreadcrumbs' | 'sampleRate' | 'sanitize'>> & InitConfig;
+  captureException(error: unknown, extra?: Record<string, unknown>): string | null;
+  captureMessage(message: string, level?: Level, extra?: Record<string, unknown>): string | null;
+  addBreadcrumb(crumb: Breadcrumb): void;
+  setUser(user: unknown): void;
+  setTag(key: string, value: unknown): void;
+  setExtra(key: string, value: unknown): void;
+}
+
+/** Initializes the SDK. Idempotent: later calls return the first client. */
+export function init(config?: InitConfig): Client;
+/** The active client, or null before init(). */
+export function getClient(): Client | null;
 export function captureException(error: unknown, extra?: Record<string, unknown>): string | void;
 export function captureMessage(message: string, level?: Level, extra?: Record<string, unknown>): string | void;
 export function addBreadcrumb(crumb: Breadcrumb): void;
