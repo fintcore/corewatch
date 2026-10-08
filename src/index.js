@@ -16,8 +16,8 @@
 import { createClient } from './core/client';
 import { createConsoleTransport } from './transports/consoleTransport';
 import { createHttpTransport } from './transports/httpTransport';
-import { installGlobalHandlers } from './integrations/globalHandlers';
-import { installBreadcrumbs } from './integrations/breadcrumbs';
+import { installGlobalHandlers } from './browser/globalHandlers';
+import { installBreadcrumbs } from './browser/breadcrumbs';
 
 let client = null; // module-level singleton (the "hub")
 

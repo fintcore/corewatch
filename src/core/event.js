@@ -4,7 +4,8 @@
  * so keep it stable.
  */
 
-import { getRuntimeContext, SDK } from './context';
+import { getRuntimeContext } from '../browser/context';
+import { SDK } from './sdk';
 import { normalizeError } from './stacktrace';
 
 let counter = 0;

@@ -1,15 +1,12 @@
 /**
- * Static + runtime context attached to every event.
- * Framework-agnostic. No side effects on import.
+ * Browser runtime context attached to every event (url, UA, viewport, language).
+ * No side effects on import; every global access is guarded.
  */
 
-export const SDK = {
-  name: 'corewatch',
-  version: '0.1.0',
-};
+import { SDK } from '../core/sdk';
 
 /** Very light UA parse. Server-side enrichment can do better later. */
-function parseUserAgent(ua = '') {
+export function parseUserAgent(ua = '') {
   const browser = {
     name: 'unknown',
     version: '', 
