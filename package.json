@@ -27,8 +27,18 @@
     "name": "DynamiCore",
     "url": "https://dynamicore.io"
   },
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "sideEffects": false,
   "files": [
     "dist",
@@ -38,7 +48,10 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "babel src --out-dir dist --delete-dir-on-start",
+    "clean": "node scripts/clean.js",
+    "build:cjs": "babel src --out-dir dist/cjs",
+    "build:esm": "babel src --out-dir dist/esm --env-name esm",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm && node scripts/postbuild.js",
     "prepare": "npm run build"
   },
   "peerDependencies": {
