@@ -15,3 +15,6 @@ npm-debug.log*
 .idea/
 .vscode/
 .claude/
+
+# Local secrets (never commit)
+.secrets/
