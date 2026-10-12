@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "main": "../dist/cjs/core/index.js",
+  "module": "../dist/esm/core/index.js",
+  "types": "../core.d.ts",
+  "sideEffects": false
+}

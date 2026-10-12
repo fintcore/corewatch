@@ -30,6 +30,22 @@ for (const [subpath, names] of Object.entries(expected)) {
     failed = true;
     console.error(`✗ ${id}: types file ${types} not found`);
   }
+  // Bundlers that ignore "exports" (webpack 4 / CRA 4) resolve subpaths through <subpath>/package.json.
+  if (subpath !== '.') {
+    const legacy = new URL(`..${subpath.slice(1)}/package.json`, import.meta.url);
+    if (!existsSync(legacy)) {
+      failed = true;
+      console.error(`✗ ${id}: missing ${subpath.slice(2)}/package.json for bundlers without "exports" support`);
+    } else {
+      const fields = JSON.parse(readFileSync(legacy, 'utf8'));
+      for (const field of ['main', 'module', 'types']) {
+        if (!existsSync(new URL(fields[field], legacy))) {
+          failed = true;
+          console.error(`✗ ${id}: ${subpath.slice(2)}/package.json "${field}" points to a missing file`);
+        }
+      }
+    }
+  }
   if (!failed) console.log(`✓ ${id}`);
 }
 

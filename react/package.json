@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "main": "../dist/cjs/react/index.js",
+  "module": "../dist/esm/react/index.js",
+  "types": "../react.d.ts",
+  "sideEffects": false
+}

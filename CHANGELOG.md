@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Fixed
+
+- `@dynamicore/corewatch/react` and `@dynamicore/corewatch/core` now resolve in bundlers that ignore `exports`, such as webpack 4 (Create React App 4).
+
 ## [0.1.0] - 2026-10-12
 
 First public version.
