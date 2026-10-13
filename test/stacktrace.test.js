@@ -24,6 +24,21 @@ describe('parseStack', () => {
     ]);
   });
 
+  it('cleans Hermes bytecode frames from React Native', () => {
+    const stack = [
+      'TypeError: undefined is not a function',
+      '    at onPress (address at index.android.bundle:1:345678)',
+      '    at anonymous (native)',
+      '    at Pressable (http://192.168.1.5:8081/index.bundle?platform=ios&dev=true:1234:56)',
+    ].join('\n');
+
+    expect(parseStack(stack)).toEqual([
+      { function: 'onPress', filename: 'index.android.bundle', lineno: 1, colno: 345678 },
+      { function: 'anonymous', filename: 'native', lineno: null, colno: null },
+      { function: 'Pressable', filename: 'http://192.168.1.5:8081/index.bundle?platform=ios&dev=true', lineno: 1234, colno: 56 },
+    ]);
+  });
+
   it('returns an empty list for missing or non-string stacks', () => {
     expect(parseStack(undefined)).toEqual([]);
     expect(parseStack(42)).toEqual([]);
