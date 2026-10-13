@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -9,6 +10,10 @@ export default defineConfig({
     jsx: 'transform',
     jsxFactory: 'React.createElement',
     jsxFragment: 'React.Fragment',
+  },
+  resolve: {
+    // The native adapter imports react-native; tests use a small stand-in instead of the real package.
+    alias: { 'react-native': fileURLToPath(new URL('./test/stubs/react-native.js', import.meta.url)) },
   },
   test: {
     include: ['test/**/*.test.js'],
