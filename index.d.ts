@@ -120,7 +120,8 @@ export const logger: {
   debug: (message: string, extra?: Record<string, unknown>) => string | void;
 };
 
-export function createConsoleTransport(options?: { collapsed?: boolean }): Transport;
+/** `styled: false` prints plain text (no %c CSS), as React Native and Node consoles need. */
+export function createConsoleTransport(options?: { collapsed?: boolean; styled?: boolean }): Transport;
 type Resolvable<T> = T | (() => T | null | undefined);
 
 export function createHttpTransport(options?: {
