@@ -27,32 +27,39 @@ export function getCurrentRoute() {
 
 /**
  * Reads name/version/build from Expo modules when the app has them installed.
+ * Inside Expo Go, expo-application describes Expo Go itself, so the project's
+ * app.json values (expo-constants) are used instead.
  * The requires sit inside try/catch so Metro treats them as optional dependencies.
  */
 function detectExpoApp() {
   const app = {};
+  let Constants = null;
   try {
     // eslint-disable-next-line global-require
-    const Application = require('expo-application');
-    app.name = Application.applicationName || undefined;
-    app.id = Application.applicationId || undefined;
-    app.version = Application.nativeApplicationVersion || undefined;
-    app.build = Application.nativeBuildVersion || undefined;
+    const ConstantsModule = require('expo-constants');
+    Constants = ConstantsModule.default || ConstantsModule;
   } catch (_) {
-    /* expo-application not installed */
+    /* expo-constants not installed */
   }
-  if (!app.version) {
+  const expoConfig = (Constants && (Constants.expoConfig || Constants.manifest)) || {};
+  const inExpoGo = Boolean(Constants && (Constants.executionEnvironment === 'storeClient' || Constants.appOwnership === 'expo'));
+
+  if (!inExpoGo) {
     try {
       // eslint-disable-next-line global-require
-      const ConstantsModule = require('expo-constants');
-      const Constants = ConstantsModule.default || ConstantsModule;
-      const expoConfig = Constants.expoConfig || Constants.manifest || {};
-      app.name = app.name || expoConfig.name;
-      app.version = expoConfig.version;
+      const Application = require('expo-application');
+      app.name = Application.applicationName || undefined;
+      app.id = Application.applicationId || undefined;
+      app.version = Application.nativeApplicationVersion || undefined;
+      app.build = Application.nativeBuildVersion || undefined;
     } catch (_) {
-      /* expo-constants not installed */
+      /* expo-application not installed */
     }
   }
+
+  app.name = app.name || expoConfig.name;
+  app.version = app.version || expoConfig.version;
+  if (inExpoGo) app.expoGo = true;
   Object.keys(app).forEach((key) => app[key] === undefined && delete app[key]);
   return app;
 }
