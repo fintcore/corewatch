@@ -4,7 +4,20 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- **React Native and Expo support.** Metro resolves `@dynamicore/corewatch` to the native entry (also available as `@dynamicore/corewatch/native`):
+  - uncaught errors through `ErrorUtils` (fatal crashes wait up to `fatalFlushTimeoutMs` for delivery) and unhandled rejections through Hermes or `promise/rejection-tracking`;
+  - context with OS, device, screen, JS engine, app name/version/build (from `init({ app })`, `expo-application` or `expo-constants`) and the current route;
+  - `wrap(App)` with touch breadcrumbs and a root `ErrorBoundary`, `registerNavigationContainer()` for React Navigation and Expo Router, `AppState` lifecycle breadcrumbs;
+  - native `ErrorBoundary` / `withErrorBoundary` with a `View`/`Text`/`Pressable` fallback.
+- `flush()` sends queued events on demand.
+- Console transport options `styled` and `grouped` (plain, one-line output for React Native and Node).
+
 ### Fixed
+
+- Hermes frames no longer keep the `address at` prefix.
+- Errors passed to `console.warn`/`console.error` keep their message in breadcrumbs instead of `{}`.
 
 - `@dynamicore/corewatch/react` and `@dynamicore/corewatch/core` now resolve in bundlers that ignore `exports`, such as webpack 4 (Create React App 4).
 

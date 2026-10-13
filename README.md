@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <b>Lightweight, Sentry-style error monitoring for React and the browser.</b><br>
+  <b>Lightweight, Sentry-style error monitoring for React, React Native and the browser.</b><br>
   Capture errors with full context, keep personal data out, send events wherever you want.
 </p>
 
@@ -24,6 +24,7 @@
   <a href="./docs/react.md">React</a> ·
   <a href="./docs/transports.md">Transports</a> ·
   <a href="./docs/privacy.md">Privacy</a> ·
+  <a href="./docs/react-native.md">React Native</a> ·
   <a href="./docs/platforms.md">Platforms</a>
 </p>
 
@@ -42,7 +43,8 @@ It was built at [DynamiCore](https://dynamicore.io) to monitor production fintec
 - 🎛️ **Control the noise**: sampling, `ignoreErrors`, duplicate suppression and a `beforeSend` hook.
 - 🚚 **Pluggable transports**: console for development, HTTP with a queue and retries, or your own in a few lines.
 - 🪶 **Small and safe**: zero runtime dependencies, no side effects on import, never throws into your app.
-- 🧩 **Built for more platforms**: a platform-agnostic core ready for React Native and Node adapters.
+- 📱 **React Native and Expo**: same package and imports; Metro picks the native entry with crash, promise, touch, navigation and app lifecycle capture.
+- 🧩 **Built for more platforms**: a platform-agnostic core with small adapters per runtime (Node is next).
 
 ## Install
 
@@ -155,6 +157,7 @@ Full reference: [Event schema](./docs/event-schema.md).
 | `@dynamicore/corewatch` | `init()`, capture and scope API, `logger`, transports, Redux enhancer, React bindings |
 | `@dynamicore/corewatch/react` | `ErrorBoundary`, `withErrorBoundary`, `useCaptureError` |
 | `@dynamicore/corewatch/core` | Platform-agnostic core for writing adapters (no DOM, no React) |
+| `@dynamicore/corewatch/native` | React Native entry (Metro resolves it automatically for the root import) |
 
 Shipped as ES modules and CommonJS, with TypeScript declarations for every entry point.
 
@@ -169,6 +172,7 @@ Shipped as ES modules and CommonJS, with TypeScript declarations for every entry
 | `setUser(user)` / `setTag(key, value)` / `setExtra(key, value)` | Context attached to every following event. |
 | `addBreadcrumb(crumb)` | Adds a custom step to the trail. |
 | `getClient()` | The active client, or `null` before `init()`. |
+| `flush()` | Sends queued events now (resolves when transports are done). |
 | `createReduxEnhancer(options?)` | Redux actions as breadcrumbs and state as context. [Redux](./docs/redux.md) |
 | `createConsoleTransport()` / `createHttpTransport()` | Built-in transports. [Transports](./docs/transports.md) |
 
@@ -179,7 +183,7 @@ Shipped as ES modules and CommonJS, with TypeScript declarations for every entry
 | React web (CRA, Vite, Next.js client, webpack) | ✅ Supported |
 | Browser JavaScript without React | ✅ Supported |
 | Server-side rendering | ⚠️ Safe to import; call `init()` on the client |
-| React Native | 🗺️ Planned |
+| React Native (Expo and bare) | ✅ Supported |
 | Node.js | 🗺️ Planned |
 
 The core has no browser dependencies; each runtime plugs in through a small platform adapter. See [Platforms and architecture](./docs/platforms.md) for the design and the roadmap.
@@ -193,6 +197,7 @@ The core has no browser dependencies; each runtime plugs in through a small plat
 - [Transports](./docs/transports.md)
 - [Privacy and data scrubbing](./docs/privacy.md)
 - [Event schema](./docs/event-schema.md)
+- [React Native and Expo](./docs/react-native.md)
 - [Platforms and architecture](./docs/platforms.md)
 
 ## Contributing

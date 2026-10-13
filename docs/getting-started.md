@@ -10,6 +10,7 @@ This guide takes a React app from zero to its first captured error in about five
 | React | 16.8 or newer, for the root and `/react` entry points. `@dynamicore/corewatch/core` does not import React |
 | Bundlers | webpack 4/5 (including Create React App), Vite, Rollup, esbuild, Parcel |
 | TypeScript | Types are bundled; no `@types` package needed |
+| React Native | 0.70+ / Expo SDK 50+: see the [React Native guide](./react-native.md) |
 | Node.js | Only to build your app. Server-side capture is on the [roadmap](./platforms.md) |
 
 ## 1. Install
