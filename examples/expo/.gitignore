@@ -1,0 +1,4 @@
+node_modules/
+.expo/
+corewatch.tgz
+package-lock.json

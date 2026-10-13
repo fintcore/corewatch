@@ -54,7 +54,7 @@ interface CoreWatchEvent {
 }
 ```
 
-Other platforms provide their own `context` (for example OS version and device model on React Native).
+On React Native the context has `os`, `device`, `screen`, `viewport`, `runtime` (`hermes` / `jsc`), `app` and the current `route` (also as `url: "app://<Route>"`). See [React Native](./react-native.md#event-context).
 
 ## Breadcrumb categories
 

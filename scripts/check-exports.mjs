@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const require = createRequire(import.meta.url);
 const expected = {
-  '.': ['init', 'captureException', 'ErrorBoundary', 'createHttpTransport', 'DEFAULT_DENY_KEYS'],
+  '.': ['init', 'flush', 'captureException', 'ErrorBoundary', 'createHttpTransport', 'DEFAULT_DENY_KEYS'],
   './react': ['ErrorBoundary', 'withErrorBoundary', 'useCaptureError'],
   './core': ['initClient', 'createClient', 'sanitize'],
 };
@@ -47,6 +47,27 @@ for (const [subpath, names] of Object.entries(expected)) {
     }
   }
   if (!failed) console.log(`✓ ${id}`);
+}
+
+// React Native entry: it imports react-native, so it cannot load in Node. Check its shape instead.
+const nativeFiles = [
+  pkg['react-native'],
+  pkg.exports['.']['react-native'].default,
+  pkg.exports['.']['react-native'].types,
+  pkg.exports['./native'].require,
+  pkg.exports['./native'].types,
+  'native/package.json',
+];
+const missing = nativeFiles.filter((file) => !file || !existsSync(new URL(`../${file}`, import.meta.url)));
+const firstCondition = Object.keys(pkg.exports['.'])[0];
+if (missing.length) {
+  failed = true;
+  console.error(`✗ ${pkg.name} (react-native): missing ${missing.join(', ')}`);
+} else if (firstCondition !== 'react-native') {
+  failed = true;
+  console.error(`✗ ${pkg.name}: "react-native" must be the first condition of exports["."] (got "${firstCondition}")`);
+} else {
+  console.log(`✓ ${pkg.name} (react-native) and ${pkg.name}/native`);
 }
 
 process.exit(failed ? 1 : 0);

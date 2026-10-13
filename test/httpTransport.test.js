@@ -137,11 +137,11 @@ describe('createHttpTransport', () => {
     expect(fetchMock.mock.calls.map(([, init]) => JSON.parse(init.body).exception_value)).toEqual(['b', 'c']);
   });
 
-  it('flushes everything with keepalive when the page goes away', () => {
+  it('flushes everything with keepalive when the page goes away', async () => {
     const transport = createHttpTransport({ authorization: 't' });
     transport.send(makeEvent('a'));
     transport.send(makeEvent('b'));
-    transport.flush(true);
+    await expect(transport.flush(true)).resolves.toBeUndefined();
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock.mock.calls.every(([, init]) => init.keepalive)).toBe(true);

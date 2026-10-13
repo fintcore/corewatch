@@ -186,7 +186,10 @@ export function installHistoryBreadcrumbs(client) {
 
 function safeString(v) {
   try {
-    return typeof v === 'string' ? v : JSON.stringify(v);
+    if (typeof v === 'string') return v;
+    // JSON.stringify(new Error('x')) is "{}": keep what identifies the error.
+    if (v instanceof Error) return `${v.name || 'Error'}: ${v.message}`;
+    return JSON.stringify(v);
   } catch (_) {
     return String(v);
   }

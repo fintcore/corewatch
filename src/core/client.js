@@ -154,6 +154,23 @@ export function createClient(userConfig, transports, options = {}) {
       return process(raw, extraContext);
     },
 
+    /**
+     * Asks every transport to send what it has queued right away. Resolves when
+     * the transports report they are done (never rejects). Used before the app
+     * goes to the background or crashes.
+     */
+    flush() {
+      const pending = activeTransports.map((t) => {
+        try {
+          return t && typeof t.flush === 'function' ? t.flush(true) : undefined;
+        } catch (err) {
+          log('transport flush failed', t && t.name, err);
+          return undefined;
+        }
+      });
+      return Promise.all(pending).then(() => undefined, () => undefined);
+    },
+
     addBreadcrumb: (crumb) => scope.addBreadcrumb(crumb),
     setUser: (u) => scope.setUser(u),
     setTag: (k, v) => scope.setTag(k, v),

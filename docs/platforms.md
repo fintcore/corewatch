@@ -7,7 +7,7 @@
 | React web (CRA, Vite, Next.js client, webpack) | ✅ Supported | `@dynamicore/corewatch`, `@dynamicore/corewatch/react` |
 | Browser JavaScript without React | ✅ Supported | `@dynamicore/corewatch` (do not use the React exports) |
 | Server-side rendering | ⚠️ Import is safe; call `init()` on the client only | — |
-| React Native | 🗺️ Planned | `@dynamicore/corewatch/native` (planned) |
+| React Native (Expo and bare) | ✅ Supported | `@dynamicore/corewatch` (Metro picks the native entry) or `@dynamicore/corewatch/native`. See [React Native](./react-native.md) |
 | Node.js | 🗺️ Planned | `@dynamicore/corewatch/node` (planned) |
 | Custom runtimes (workers, Electron, ...) | 🧩 Build your own adapter | `@dynamicore/corewatch/core` |
 
@@ -17,11 +17,15 @@
 src/
 ├── core/          Platform-agnostic: client, hub, event, scope, sanitize, dedupe, stacktrace
 ├── browser/       Browser adapter: runtime context, global handlers, automatic breadcrumbs
+├── native/        React Native adapter: context, ErrorUtils/rejections, navigation, touches, AppState, native ErrorBoundary
 ├── transports/    console, http
 ├── integrations/  redux
 ├── react/         ErrorBoundary, withErrorBoundary, useCaptureError
-└── index.js       Browser entry: init() = initClient(config, browserPlatform)
+├── index.js       Browser entry: init() = initClient(config, browserPlatform)
+└── native/index.js React Native entry: init() = initClient(config, nativePlatform)
 ```
+
+Metro resolves `@dynamicore/corewatch` to `native/index.js` through the `react-native` export condition (and the `react-native` field for older Metro versions). Web bundlers ignore both and get the browser entry.
 
 `src/core` never touches `window`, `document` or `navigator`. Everything that depends on a runtime lives in a **platform adapter**:
 
@@ -65,19 +69,19 @@ Rules every adapter follows:
 
 ### React Native
 
-Reuses `core`, the transports API and `useCaptureError`. Needs its own adapter for:
+✅ Shipped. How each piece maps from the web:
 
 | Piece | Web | React Native |
 |---|---|---|
-| Uncaught errors | `window` `error` | `ErrorUtils.setGlobalHandler`, chaining the previous handler |
-| Unhandled rejections | `unhandledrejection` | Hermes `enablePromiseRejectionTracker` |
-| Context | URL, user agent, viewport | `Platform` (OS, version), `Dimensions`, app name and version |
-| Breadcrumbs | clicks, `history` | touches on a root wrapper, React Navigation state changes (`fetch`, XHR and `console` work as on web) |
-| `ErrorBoundary` fallback | DOM elements | must be provided with `View` / `Text` |
-| Offline delivery | flush on `pagehide` | flush on `AppState` background, queue persisted to storage |
-| Stack traces | file URLs | Hermes frames (`address at index.android.bundle`) symbolicated with source maps on the server |
+| Uncaught errors | `window` `error` | `ErrorUtils.setGlobalHandler`, chaining the previous handler; fatal errors wait (bounded) for a flush |
+| Unhandled rejections | `unhandledrejection` | Hermes `enablePromiseRejectionTracker` (or `promise/rejection-tracking` on JSC) |
+| Context | URL, user agent, viewport | `Platform`, `Dimensions`, app info from Expo, JS engine, current route |
+| Breadcrumbs | clicks, `history` | touches via `wrap()`, `registerNavigationContainer()`; `fetch`, XHR and `console` as on web |
+| `ErrorBoundary` fallback | DOM elements | `View` / `Text` / `Pressable` |
+| Delivery | flush on `pagehide` | flush on `AppState` background and before fatal crashes |
+| Stack traces | file URLs | Hermes frames (`address at` prefix removed); symbolication with source maps on the server |
 
-It will ship as `@dynamicore/corewatch/native` and be selected automatically by Metro through the `react-native` field in `package.json`.
+Next steps: offline queue persisted to storage, server-side source maps, native (non-JS) crash capture.
 
 ### Node.js
 

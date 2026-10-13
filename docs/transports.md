@@ -18,7 +18,11 @@ Prints each event as a styled, collapsed group with the stack, breadcrumbs, user
 
 ```js
 createConsoleTransport({ collapsed: false }); // expanded groups
+createConsoleTransport({ styled: false });    // no %c CSS (Node, React Native)
+createConsoleTransport({ grouped: false });   // one line per event (Metro/Expo hide console groups)
 ```
+
+On React Native the console transport defaults to `styled: false, grouped: false`.
 
 ## HTTP transport (DynamiCore API)
 
@@ -53,6 +57,16 @@ How it behaves:
 - **Retries** network errors and `401`, `403`, `408`, `429` and `5xx` responses with exponential backoff. Other `4xx` responses are dropped. Retries are safe because the server deduplicates by `eventId`.
 - **Flushes on page exit** (`pagehide`, or `visibilitychange` to hidden) with `fetch(..., { keepalive: true })`. Browsers limit keepalive requests to about 64 KB in total, so very large events (for example a full Redux state) can be lost at that moment.
 - Uses the native `fetch` captured when the transport is created, so its own requests never show up as breadcrumbs.
+
+## Flushing
+
+`flush()` asks every transport to send what it has queued right away and resolves when they are done (it never rejects). Transports may implement `flush(immediate)`; the HTTP transport sends everything at once. React Native calls it when the app goes to the background and before a fatal crash.
+
+```js
+import { flush } from '@dynamicore/corewatch';
+
+await flush();
+```
 
 ## Custom transports
 

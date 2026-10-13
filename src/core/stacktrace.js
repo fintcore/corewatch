@@ -9,10 +9,13 @@ const CHROME_RE = /^\s*at (?:(.+?)\s+\()?(?:(.+?):(\d+):(\d+)|([^)]+))\)?\s*$/;
 // Firefox / Safari:  "fnName@file:line:col"  or  "@file:line:col"
 const GECKO_RE = /^\s*(?:(.*?)@)?(.+?):(\d+):(\d+)\s*$/;
 
+// Hermes (React Native) prints bytecode frames as "address at index.android.bundle".
+const HERMES_ADDRESS_RE = /^address at /;
+
 function toFrame(fn, file, line, col) {
   return {
     function: fn || '<anonymous>',
-    filename: file || '',
+    filename: (file || '').replace(HERMES_ADDRESS_RE, ''),
     lineno: line ? parseInt(line, 10) : null,
     colno: col ? parseInt(col, 10) : null,
   };

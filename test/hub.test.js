@@ -52,6 +52,14 @@ describe('hub', () => {
     expect(hub.getClient()).not.toBeNull();
   });
 
+  it('flush() is a no-op before init and delegates to the client after', async () => {
+    await expect(hub.flush()).resolves.toBeUndefined();
+    const flushed = vi.fn();
+    hub.initClient({ transports: [{ name: 't', send() {}, flush: flushed }] });
+    await hub.flush();
+    expect(flushed).toHaveBeenCalledWith(true);
+  });
+
   it('maps logger methods to levels', () => {
     const { sent, transport } = memory();
     hub.initClient({ transports: [transport] });

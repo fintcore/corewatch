@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "main": "../dist/cjs/native/index.js",
+  "module": "../dist/esm/native/index.js",
+  "react-native": "../dist/esm/native/index.js",
+  "types": "../native.d.ts",
+  "sideEffects": false
+}

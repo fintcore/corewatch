@@ -23,6 +23,13 @@ src/
     dedupe.js              Drops repeated signatures (ring of 30).
     sdk.js                 SDK name/version (version must match package.json; a test enforces it).
     index.js               `@dynamicore/corewatch/core` entry for adapter authors.
+  native/                  React Native adapter (Expo and bare). Imports react-native; never imported by the web entry.
+    index.js               init() = initClient(config, nativePlatform); entry resolved by Metro (react-native condition/field).
+    context.js             OS, device, screen, engine, app info (expo-application/expo-constants, optional requires), route.
+    globalHandlers.js      ErrorUtils handler (chains RN's; fatal waits for flush) + Hermes/JSC rejection tracking.
+    navigation.js          registerNavigationContainer(ref): route-name breadcrumbs, current route in context.
+    touch.js               ui.touch breadcrumbs from the event fiber (accessibilityLabel/testID/nativeID).
+    components.js          ErrorBoundary/withErrorBoundary with native fallback, wrap(App).
   browser/                 Browser platform adapter.
     index.js               browserPlatform: { name, getContext, defaultTransports, setup }.
     context.js             Runtime context (url, UA, viewport, language, online) + parseUserAgent.
@@ -33,8 +40,8 @@ src/
     httpTransport.js       DynamiCore API: queue, one POST per event, backoff, waits for a session token, keepalive flush.
   integrations/redux.js    createReduxEnhancer(): actions as breadcrumbs, state in extra['redux.state'].
   react/                   ErrorBoundary, withErrorBoundary, useCaptureError (+ index.js for the /react entry).
-index.d.ts, react.d.ts, core.d.ts   Hand-written types, one per exports entry. Update them with the API.
-test/                      Vitest suites (node environment; React via react-test-renderer).
+index.d.ts, react.d.ts, core.d.ts, native.d.ts   Hand-written types, one per exports entry. Update them with the API.
+test/                      Vitest suites (node environment; React via react-test-renderer; react-native aliased to test/stubs).
 scripts/                   clean, postbuild (module type markers), check-exports (package smoke test).
 docs/                      User documentation.
 ```
@@ -71,7 +78,7 @@ Returns the `eventId` or `null`. The event shape is documented in `docs/event-sc
 npm install            # also runs the build (prepare)
 npm test               # Vitest
 npm run build          # dist/esm (ESM, type: module) + dist/cjs (CommonJS)
-npm run check:exports  # loads ".", "./react", "./core" by package name in ESM and CJS
+npm run check:exports  # loads ".", "./react", "./core" by package name in ESM and CJS; checks the native entry's files/conditions
 ```
 
 Apps that consume the package through `file:` use `dist/`, so rebuild after changing `src/`. To check in a real app, run it with `init({ debug: true })` and throw a test error; events show up as collapsed console groups.
@@ -89,10 +96,13 @@ Gitmoji + English imperative subject (`✨ Add ...`, `🐛 Fix ...`, `✅ Cover 
 - The default `ErrorBoundary` fallback is unstyled Spanish text rendered with DOM elements.
 - `httpTransport` adds `visibilitychange`/`pagehide` listeners when created and never removes them.
 - `sendBeacon` cannot send the `Authorization` header, so page-exit flushes use `fetch` with `keepalive` (~64 KB total). Huge events can be lost then.
-- Global handlers only check `typeof window`. On React Native (`window === global`, no `addEventListener`) the browser adapter's `setup()` fails; the hub catches it, so `init()` does not crash, but nothing is captured automatically. That is what the planned native adapter solves.
+- On React Native, Metro must resolve the native entry (react-native condition/field). If a project forces the browser entry, its `setup()` fails (no `window.addEventListener`); the hub catches it, so `init()` does not crash, but nothing is captured automatically.
+- React Native events are kept in memory only: no offline persistence yet. Native (non-JS) crashes are not captured.
+- In React Native dev builds, LogBox shows render errors even when an ErrorBoundary caught them; the fallback is underneath.
+- To try the native entry in a real app: `npm run build && npm pack`, install the tarball in an Expo app (Metro does not follow `file:` symlinks outside the project by default) and run `npx expo start --ios`.
 
 ## Roadmap
 
-1. React Native adapter (`src/native`, `@dynamicore/corewatch/native`, picked by Metro via the `react-native` field). Design in `docs/platforms.md`.
+1. React Native: offline queue persisted to storage; server-side Hermes source maps.
 2. Node adapter (`src/node`).
 3. Move React out of the root entry in the next major, so non-React consumers do not need it.

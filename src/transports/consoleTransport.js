@@ -18,6 +18,10 @@ function frameLine(f) {
 
 export function createConsoleTransport(options = {}) {
   const collapsed = options.collapsed !== false; // default: collapsed groups
+  // %c CSS styles only work in browser devtools; React Native / Node consoles print them as text.
+  const styled = options.styled !== false;
+  // Expo / Metro do not forward console.group output to the terminal: print one line per event instead.
+  const grouped = options.grouped !== false;
 
   return {
     name: 'console',
@@ -25,12 +29,35 @@ export function createConsoleTransport(options = {}) {
       if (typeof console === 'undefined') return;
 
       /* eslint-disable no-console */
-      const style = LEVEL_STYLE[event.level] || LEVEL_STYLE.info;
-      const title = `%c${event.level.toUpperCase()}%c ${event.message || '(no message)'}`;
-      const group = collapsed && console.groupCollapsed ? console.groupCollapsed : console.group;
+      if (!grouped) {
+        const ex = event.exception;
+        console.log(`[CoreWatch] ${event.level.toUpperCase()} ${event.message || '(no message)'}`, {
+          eventId: event.eventId,
+          mechanism: event.mechanism,
+          project: event.project,
+          environment: event.environment,
+          route: event.context && (event.context.route || event.context.url),
+          frame: ex && ex.stack && ex.stack[0] ? frameLine(ex.stack[0]).trim() : undefined,
+          user: event.user || undefined,
+          extra: event.extra && Object.keys(event.extra).length ? event.extra : undefined,
+          breadcrumbs: (event.breadcrumbs || []).slice(-5).map((b) => `${b.category}: ${b.message}`),
+        });
+        return;
+      }
 
-      if (group) group.call(console, title, style, 'color:inherit;font-weight:bold');
-      else console.log(title, style, 'color:inherit');
+      const group = collapsed && console.groupCollapsed ? console.groupCollapsed : console.group;
+      const text = `${event.level.toUpperCase()} ${event.message || '(no message)'}`;
+
+      if (styled) {
+        const style = LEVEL_STYLE[event.level] || LEVEL_STYLE.info;
+        const title = `%c${event.level.toUpperCase()}%c ${event.message || '(no message)'}`;
+        if (group) group.call(console, title, style, 'color:inherit;font-weight:bold');
+        else console.log(title, style, 'color:inherit');
+      } else if (group) {
+        group.call(console, `[CoreWatch] ${text}`);
+      } else {
+        console.log(`[CoreWatch] ${text}`);
+      }
 
       console.log('eventId    :', event.eventId);
       console.log('mechanism  :', event.mechanism);

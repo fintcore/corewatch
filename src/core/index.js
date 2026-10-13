@@ -8,6 +8,7 @@
 export {
   initClient,
   getClient,
+  flush,
   captureException,
   captureMessage,
   addBreadcrumb,

@@ -60,6 +60,12 @@ export function _resetClient() {
   client = null;
 }
 
+/** Sends queued events now. Resolves (never rejects) when transports are done; no-op before init(). */
+export function flush() {
+  if (!client) return Promise.resolve();
+  return client.flush();
+}
+
 export function captureException(error, extra) {
   if (!client) return warnNotInit();
   return client.captureException(error, extra);

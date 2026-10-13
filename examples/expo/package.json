@@ -1,0 +1,21 @@
+{
+  "name": "corewatch-expo-example",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "sdk": "cd ../.. && npm run build && npm pack --silent --pack-destination examples/expo && mv examples/expo/dynamicore-corewatch-*.tgz examples/expo/corewatch.tgz",
+    "setup": "npm run sdk && npm install",
+    "start": "expo start",
+    "ios": "expo start --ios",
+    "android": "expo start --android"
+  },
+  "dependencies": {
+    "@dynamicore/corewatch": "file:./corewatch.tgz",
+    "expo": "~57.0.28",
+    "expo-application": "~57.0.3",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3"
+  }
+}
