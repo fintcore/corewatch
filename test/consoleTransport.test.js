@@ -15,6 +15,17 @@ describe('createConsoleTransport', () => {
     expect(group.mock.calls[0][1]).toContain('background');
   });
 
+  it('prints one line per event when grouped is false', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const group = vi.spyOn(console, 'groupCollapsed').mockImplementation(() => {});
+    createConsoleTransport({ grouped: false }).send(event);
+
+    expect(group).not.toHaveBeenCalled();
+    expect(log).toHaveBeenCalledOnce();
+    expect(log.mock.calls[0][0]).toBe('[CoreWatch] ERROR TypeError: bad');
+    expect(log.mock.calls[0][1]).toMatchObject({ eventId: event.eventId, mechanism: 'manual', project: 'app' });
+  });
+
   it('prints plain text when styled is false', () => {
     const group = vi.spyOn(console, 'groupCollapsed').mockImplementation(() => {});
     vi.spyOn(console, 'log').mockImplementation(() => {});

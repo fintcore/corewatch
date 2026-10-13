@@ -79,9 +79,9 @@ export function init(config = {}) {
   return initClient(config, nativePlatform);
 }
 
-/** Console transport without browser %c styles (React Native consoles print them as text). */
+/** Console transport for React Native: plain text, one line per event (Metro does not show console groups). */
 export function createConsoleTransport(options = {}) {
-  return createBaseConsoleTransport({ styled: false, ...options });
+  return createBaseConsoleTransport({ styled: false, grouped: false, ...options });
 }
 
 /**

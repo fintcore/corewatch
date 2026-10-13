@@ -28,7 +28,8 @@ export interface NativeInitConfig extends Omit<BaseInitConfig, 'integrations'> {
 /** Initializes the SDK on React Native. Idempotent. */
 export function init(config?: NativeInitConfig): Client;
 
-export function createConsoleTransport(options?: { collapsed?: boolean; styled?: boolean }): Transport;
+/** Plain text, one line per event by default (Metro does not show console groups). */
+export function createConsoleTransport(options?: { collapsed?: boolean; styled?: boolean; grouped?: boolean }): Transport;
 
 type Resolvable<T> = T | (() => T | null | undefined);
 

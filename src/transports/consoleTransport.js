@@ -20,6 +20,8 @@ export function createConsoleTransport(options = {}) {
   const collapsed = options.collapsed !== false; // default: collapsed groups
   // %c CSS styles only work in browser devtools; React Native / Node consoles print them as text.
   const styled = options.styled !== false;
+  // Expo / Metro do not forward console.group output to the terminal: print one line per event instead.
+  const grouped = options.grouped !== false;
 
   return {
     name: 'console',
@@ -27,6 +29,22 @@ export function createConsoleTransport(options = {}) {
       if (typeof console === 'undefined') return;
 
       /* eslint-disable no-console */
+      if (!grouped) {
+        const ex = event.exception;
+        console.log(`[CoreWatch] ${event.level.toUpperCase()} ${event.message || '(no message)'}`, {
+          eventId: event.eventId,
+          mechanism: event.mechanism,
+          project: event.project,
+          environment: event.environment,
+          route: event.context && (event.context.route || event.context.url),
+          frame: ex && ex.stack && ex.stack[0] ? frameLine(ex.stack[0]).trim() : undefined,
+          user: event.user || undefined,
+          extra: event.extra && Object.keys(event.extra).length ? event.extra : undefined,
+          breadcrumbs: (event.breadcrumbs || []).slice(-5).map((b) => `${b.category}: ${b.message}`),
+        });
+        return;
+      }
+
       const group = collapsed && console.groupCollapsed ? console.groupCollapsed : console.group;
       const text = `${event.level.toUpperCase()} ${event.message || '(no message)'}`;
 
