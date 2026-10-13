@@ -175,14 +175,14 @@ export function createHttpTransport(options = {}) {
     }
 
     if (keepalive) {
-      queue.splice(0, queue.length).forEach((item) => {
+      const sent = queue.splice(0, queue.length).map((item) => {
         try {
-          post(item, true);
+          return post(item, true);
         } catch (_) {
-          /* noop */
+          return undefined;
         }
       });
-      return;
+      return Promise.all(sent).then(() => undefined);
     }
 
     if (sending) return;

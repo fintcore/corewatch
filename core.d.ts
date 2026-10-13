@@ -5,7 +5,7 @@ export type {
   Breadcrumb, Client, CoreWatchEvent, ExceptionInfo, InitConfig, Level, Mechanism, StackFrame, Transport,
 } from './index';
 export {
-  getClient, captureException, captureMessage, addBreadcrumb, setUser, setTag, setExtra, logger, DEFAULT_DENY_KEYS,
+  getClient, flush, captureException, captureMessage, addBreadcrumb, setUser, setTag, setExtra, logger, DEFAULT_DENY_KEYS,
 } from './index';
 
 /** A platform adapter: what makes the core work on a given runtime. */

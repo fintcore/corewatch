@@ -102,6 +102,19 @@ describe('createClient', () => {
     expect(broken.sent[0].context).toHaveProperty('timestamp');
   });
 
+  it('flushes every transport and never rejects', async () => {
+    const calls = [];
+    const client = createClient({}, [
+      { name: 'async', send() {}, flush: (now) => { calls.push(['async', now]); return Promise.resolve(); } },
+      { name: 'sync', send() {}, flush: (now) => { calls.push(['sync', now]); } },
+      { name: 'broken', send() {}, flush: () => { throw new Error('down'); } },
+      { name: 'no-flush', send() {} },
+    ]);
+
+    await expect(client.flush()).resolves.toBeUndefined();
+    expect(calls).toEqual([['async', true], ['sync', true]]);
+  });
+
   it('never throws when a transport or beforeSend fails', () => {
     const client = createClient({ beforeSend: () => { throw new Error('bad hook'); } }, [
       { name: 'broken', send: () => { throw new Error('down'); } },

@@ -14,7 +14,8 @@ export interface Breadcrumb {
 export interface Transport {
   name: string;
   send: (event: CoreWatchEvent) => void;
-  flush?: (useBeacon?: boolean) => void;
+  /** Send queued events now (`immediate` = do not wait for timers). */
+  flush?: (immediate?: boolean) => void | Promise<void>;
 }
 
 export interface StackFrame {
@@ -91,12 +92,16 @@ export interface Client {
   setUser(user: unknown): void;
   setTag(key: string, value: unknown): void;
   setExtra(key: string, value: unknown): void;
+  /** Sends queued events now; resolves when transports are done (never rejects). */
+  flush(): Promise<void>;
 }
 
 /** Initializes the SDK. Idempotent: later calls return the first client. */
 export function init(config?: InitConfig): Client;
 /** The active client, or null before init(). */
 export function getClient(): Client | null;
+/** Sends queued events now (e.g. before the app goes to the background). No-op before init(). */
+export function flush(): Promise<void>;
 export function captureException(error: unknown, extra?: Record<string, unknown>): string | void;
 export function captureMessage(message: string, level?: Level, extra?: Record<string, unknown>): string | void;
 export function addBreadcrumb(crumb: Breadcrumb): void;

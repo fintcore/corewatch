@@ -23,6 +23,7 @@ export function init(config = {}) {
 
 export {
   getClient,
+  flush,
   captureException,
   captureMessage,
   addBreadcrumb,
