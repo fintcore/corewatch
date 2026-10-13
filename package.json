@@ -1,7 +1,7 @@
 {
   "name": "@dynamicore/corewatch",
   "version": "0.1.0",
-  "description": "Lightweight, Sentry-style error monitoring SDK for React and the browser: errors, breadcrumbs, PII scrubbing and pluggable transports.",
+  "description": "Lightweight, Sentry-style error monitoring SDK for React, React Native (Expo) and the browser: errors, breadcrumbs, PII scrubbing and pluggable transports.",
   "keywords": [
     "error-monitoring",
     "error-tracking",
@@ -9,6 +9,8 @@
     "observability",
     "breadcrumbs",
     "react",
+    "expo",
+    "react-native",
     "error-boundary",
     "redux",
     "sentry-alternative",
@@ -29,9 +31,14 @@
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
+  "react-native": "./dist/esm/native/index.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
+      "react-native": {
+        "types": "./native.d.ts",
+        "default": "./dist/esm/native/index.js"
+      },
       "types": "./index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
@@ -49,6 +56,13 @@
       "require": "./dist/cjs/core/index.js",
       "default": "./dist/esm/core/index.js"
     },
+    "./native": {
+      "types": "./native.d.ts",
+      "react-native": "./dist/esm/native/index.js",
+      "import": "./dist/esm/native/index.js",
+      "require": "./dist/cjs/native/index.js",
+      "default": "./dist/esm/native/index.js"
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -56,6 +70,8 @@
     "dist",
     "react/package.json",
     "core/package.json",
+    "native.d.ts",
+    "native/package.json",
     "index.d.ts",
     "react.d.ts",
     "core.d.ts",
@@ -75,7 +91,8 @@
     "check:exports": "node scripts/check-exports.mjs"
   },
   "peerDependencies": {
-    "react": ">=16.8"
+    "react": ">=16.8",
+    "react-native": ">=0.70"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
@@ -100,5 +117,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    }
   }
 }
