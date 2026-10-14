@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-14
+
 ### Added
 
 - **React Native and Expo support.** Metro resolves `@dynamicore/corewatch` to the native entry (also available as `@dynamicore/corewatch/native`):
@@ -18,7 +20,6 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Hermes frames no longer keep the `address at` prefix.
 - Errors passed to `console.warn`/`console.error` keep their message in breadcrumbs instead of `{}`.
-
 - `@dynamicore/corewatch/react` and `@dynamicore/corewatch/core` now resolve in bundlers that ignore `exports`, such as webpack 4 (Create React App 4).
 
 ## [0.1.0] - 2026-10-12
@@ -43,5 +44,6 @@ First public version.
 - iPhone and iPad are reported as iOS instead of macOS.
 - The capture mechanism is no longer duplicated inside `event.extra`.
 
-[Unreleased]: https://github.com/fintcore/corewatch/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/fintcore/corewatch/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/fintcore/corewatch/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/fintcore/corewatch/releases/tag/v0.1.0

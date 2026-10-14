@@ -40,7 +40,7 @@ interface CoreWatchEvent {
 
 ```json
 {
-  "sdk": { "name": "corewatch", "version": "0.1.0" },
+  "sdk": { "name": "corewatch", "version": "0.2.0" },
   "timestamp": "2026-10-02T23:04:17.903Z",
   "url": "https://app.example.com/dashboard",
   "referrer": "https://app.example.com/login",

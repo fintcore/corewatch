@@ -1,6 +1,6 @@
 {
   "name": "@dynamicore/corewatch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lightweight, Sentry-style error monitoring SDK for React, React Native (Expo) and the browser: errors, breadcrumbs, PII scrubbing and pluggable transports.",
   "keywords": [
     "error-monitoring",

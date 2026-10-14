@@ -144,7 +144,7 @@ init({
     { "category": "ui.click", "message": "button \"Show report\"" }
   ],
   "context": { "url": "https://app.example.com/dashboard", "browser": { "name": "Chrome", "version": "154.0.0.0" }, "os": { "name": "macOS" } },
-  "sdk": { "name": "corewatch", "version": "0.1.0" }
+  "sdk": { "name": "corewatch", "version": "0.2.0" }
 }
 ```
 
