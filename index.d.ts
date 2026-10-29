@@ -130,7 +130,7 @@ type Resolvable<T> = T | (() => T | null | undefined);
 export function createHttpTransport(options?: {
   /** API base, e.g. process.env.REACT_APP_API_URL. Default https://front.dynamicore.io */
   baseUrl?: string;
-  /** Default /private/thirds/corewatch_events */
+  /** Default /marketplace/apps/tools/services/corewatch/events */
   path?: string;
   /** Full endpoint; overrides baseUrl + path. */
   url?: string;

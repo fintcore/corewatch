@@ -1,6 +1,6 @@
 /**
- * HTTP transport: persists each event through the DynamiCore CRUD
- * API: `POST {baseUrl}/private/thirds/corewatch_events`.
+ * HTTP transport: persists each event through the DynamiCore events
+ * API: `POST {baseUrl}/marketplace/apps/tools/services/corewatch/events`.
  *
  *   transports: [createConsoleTransport(), createHttpTransport({ baseUrl: API_URL, context: API_CONTEXT })]
  *
@@ -15,7 +15,7 @@
 
 const DEFAULTS = {
   baseUrl: 'https://front.dynamicore.io',
-  path: '/private/thirds/corewatch_events',
+  path: '/marketplace/apps/tools/services/corewatch/events',
   url: null, // full endpoint; overrides baseUrl + path
   authorization: null, // string | () => string. Default: read the session token from localStorage
   context: null, // string | () => string. Sent as the `context` header when present

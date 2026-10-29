@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+
+- The HTTP transport sends events to `/marketplace/apps/tools/services/corewatch/events` by default (was `/private/thirds/corewatch_events`). Set `path` or `url` to use another endpoint.
+
 ## [0.2.0] - 2026-10-14
 
 ### Added
