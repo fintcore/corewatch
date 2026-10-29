@@ -26,7 +26,7 @@ On React Native the console transport defaults to `styled: false, grouped: false
 
 ## HTTP transport (DynamiCore API)
 
-Persists events through the DynamiCore API (`POST {baseUrl}/private/thirds/corewatch_events`). If you are not on the DynamiCore platform, write a [custom transport](#custom-transports) instead.
+Persists events through the DynamiCore API (`POST {baseUrl}/marketplace/apps/tools/services/corewatch/events`). If you are not on the DynamiCore platform, write a [custom transport](#custom-transports) instead.
 
 ```js
 createHttpTransport({
@@ -38,7 +38,7 @@ createHttpTransport({
 | Option | Default | Description |
 |---|---|---|
 | `baseUrl` | `'https://front.dynamicore.io'` | API base URL. |
-| `path` | `'/private/thirds/corewatch_events'` | Endpoint path. |
+| `path` | `'/marketplace/apps/tools/services/corewatch/events'` | Endpoint path. |
 | `url` | — | Full endpoint; overrides `baseUrl` + `path`. |
 | `authorization` | session token | `string` or `() => string`. By default it reads `localStorage.accessToken`, or the Amplify/Cognito `accessToken` key. |
 | `context` | — | `string` or `() => string`, sent as the `context` header when present. |
