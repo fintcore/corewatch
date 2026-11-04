@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-04
+
 ### Changed
 
 - The HTTP transport sends events to `/marketplace/apps/tools/services/corewatch/events` by default (was `/private/thirds/corewatch_events`). Set `path` or `url` to use another endpoint.
@@ -48,6 +50,7 @@ First public version.
 - iPhone and iPad are reported as iOS instead of macOS.
 - The capture mechanism is no longer duplicated inside `event.extra`.
 
-[Unreleased]: https://github.com/fintcore/corewatch/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/fintcore/corewatch/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/fintcore/corewatch/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/fintcore/corewatch/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/fintcore/corewatch/releases/tag/v0.1.0
