@@ -87,7 +87,7 @@ describe('createHttpTransport', () => {
 
     expect(fetchMock).toHaveBeenCalledOnce();
     const [url, init] = fetchMock.mock.calls[0];
-    expect(url).toBe('https://api.test/private/thirds/corewatch_events');
+    expect(url).toBe('https://api.test/marketplace/apps/tools/services/corewatch/events');
     expect(init).toMatchObject({ method: 'POST', credentials: 'omit', keepalive: false });
     expect(init.headers).toEqual({ 'Content-Type': 'application/json', Authorization: 'tkn', context: 'ctx' });
     expect(JSON.parse(init.body).project).toBe('core-panel');
